@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class TaskManager {
     private final HashMap<Integer, Task> taskList;
@@ -134,10 +133,7 @@ public class TaskManager {
     }
 
     public List<Subtask> getSubtaskList(int epicId) {
-        return subtaskList.values()
-                .stream()
-                .filter(item -> item.getEpicId() == epicId)
-                .collect(Collectors.toList());
+        return epicList.containsKey(epicId) ? epicList.get(epicId).getSubtaskList() : new ArrayList<>();
     }
 
     public void deleteTaskList() {
