@@ -14,6 +14,11 @@ public class Epic extends Task{
         this.subtaskList = subtaskList;
     }
 
+    public void deleteSubtaskList() {
+        subtaskList.clear();
+        this.setStatus(Epic.getStatus(subtaskList));
+    }
+
     public void deleteSubtask(Subtask subtask) {
         subtaskList.remove(subtask);
         this.setStatus(Epic.getStatus(subtaskList));
@@ -36,18 +41,17 @@ public class Epic extends Task{
         return subtaskList;
     }
 
+    // если статусы саб-тасков одинаковы, то статус эпика соответствует статусу сабтасков
+    // если есть саб-таски с разными статусами, то эпик в работе
     private static TaskStatus getStatus(List<Subtask> subtaskList) {
         if (subtaskList == null || subtaskList.isEmpty()) {
             return TaskStatus.NEW;
         }
 
-        TaskStatus status = TaskStatus.DONE;
+        TaskStatus status = subtaskList.getFirst().getStatus();
         for (Subtask subtask: subtaskList) {
-            if (subtask.getStatus() == TaskStatus.IN_PROGRESS) {
-                status =TaskStatus.IN_PROGRESS;
-            }
-            if (subtask.getStatus() == TaskStatus.NEW) {
-                return TaskStatus.NEW;
+            if (subtask.getStatus() != status) {
+                return TaskStatus.IN_PROGRESS;
             }
         }
 

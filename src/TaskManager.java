@@ -141,7 +141,7 @@ public class TaskManager {
 
     public void deleteSubTaskList() {
         for (Epic epic: epicList.values()) {
-            epic.getSubtaskList().clear();
+            epic.deleteSubtaskList();
         }
         subtaskList.clear();
     }
