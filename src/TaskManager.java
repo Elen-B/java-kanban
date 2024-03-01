@@ -103,17 +103,11 @@ public class TaskManager {
     }
 
     public Task getTask(int id) {
-        if (taskList.containsKey(id)) {
-            return taskList.get(id);
-        }
-        return null;
+        return taskList.get(id);
     }
 
     public Epic getEpic(int id) {
-        if (epicList.containsKey(id)) {
-            return epicList.get(id);
-        }
-        return null;
+        return epicList.get(id);
     }
 
     public Subtask getSubtask(int id) {
