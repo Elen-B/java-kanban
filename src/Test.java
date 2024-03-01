@@ -1,8 +1,17 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Test {
     static TaskManager taskManager = new TaskManager();
     static Scanner scanner = new Scanner(System.in);
+
+    public static void startAutoCheck() {
+        checkEpicStatus1();
+        System.out.println("---");
+        checkEpicStatus2();
+        System.out.println("---");
+        checkEpicStatus3();
+    }
 
     public static void start() {
         printMenu();
@@ -344,5 +353,84 @@ public class Test {
         System.out.println(taskManager.getSubtaskList());
         int id = Integer.parseInt(scanner.nextLine());
         System.out.println(taskManager.getSubtask(id));
+    }
+
+    public static void checkEpicStatus1() {
+        System.out.print("case: Epic(status = NEW) -> addSubtask(NEW) -> addSubtask(NEW) -> addSubtask(NEW)");
+        System.out.println(" -> updateSubtask(DONE)");
+        System.out.println("Expected for epic: IN_PROGRESS");
+        TaskManager t = taskManager;
+        t.deleteEpicList();
+
+        Epic e1 = new Epic("epic name", "epic description");
+        t.addEpic(e1);
+
+        Subtask s1 = new Subtask("Subtask name 1", "Subtask description 1", 1);
+        Subtask s2 = new Subtask("Subtask name 2", "Subtask description 2", 1);
+        Subtask s3 = new Subtask("Subtask name 3", "Subtask description 3", 1);
+        t.addSubtask(s1);
+        t.addSubtask(s2);
+        t.addSubtask(s3);
+
+        System.out.println(t.getEpic(1).getStatus());
+
+        Subtask s1ForUpdate = t.getSubtask(2);
+        s1ForUpdate.setStatus(TaskStatus.DONE);
+        t.updateSubtask(s1ForUpdate);
+
+        System.out.println("In fact: " + t.getEpic(1).getStatus());
+    }
+
+    public static void checkEpicStatus2() {
+        System.out.println("case: Epic(status = NEW) -> addSubtask(IN_PROGRESS)");
+        System.out.println("Expected for epic: IN_PROGRESS");
+        TaskManager t = taskManager;
+        t.deleteEpicList();
+
+        int epicId = t.getNextTaskId();
+        Epic e1 = new Epic(epicId, "epic name", "epic description", new ArrayList<>());
+        t.addEpic(e1);
+
+        Subtask s1 = new Subtask(t.getNextTaskId(), "Subtask name 1", "Subtask description 1", TaskStatus.IN_PROGRESS, epicId);
+
+        t.addSubtask(s1);
+
+        System.out.println("In fact: " + t.getEpic(epicId).getStatus());
+    }
+
+    public static void checkEpicStatus3() {
+        System.out.print("case: Epic(status = NEW) -> addSubtask(NEW) -> addSubtask(NEW) -> updateSubtask(IN_PROGRESS)");
+        System.out.println(" -> deleteSubtask(IN_PROGRESS) -> addSubtask(IN_PROGRESS) -> deleteSubtaskList");
+        System.out.println("Expected for epic: NEW -> IN_PROGRESS -> NEW -> IN_PROGRESS -> NEW");
+        TaskManager t = taskManager;
+        t.deleteEpicList();
+
+        int epicId = t.getNextTaskId();
+        Epic e1 = new Epic(epicId, "epic name", "epic description", new ArrayList<>());
+        t.addEpic(e1);
+
+        Subtask s1 = new Subtask("Subtask name 1", "Subtask description 1", epicId);
+        Subtask s2 = new Subtask("Subtask name 2", "Subtask description 2", epicId);
+        t.addSubtask(s1);
+        t.addSubtask(s2);
+
+        System.out.print("In fact: " + t.getEpic(epicId).getStatus());
+
+        Subtask s1ForUpdate = t.getSubtaskList(epicId).getFirst();
+        s1ForUpdate.setStatus(TaskStatus.IN_PROGRESS);
+        t.updateSubtask(s1ForUpdate);
+
+        System.out.print(" -> " + t.getEpic(epicId).getStatus());
+
+        t.deleteSubtask(s1ForUpdate.getId());
+
+        System.out.print(" -> " + t.getEpic(epicId).getStatus());
+
+        s1 = new Subtask(t.getNextTaskId(), "Subtask name 1", "Subtask description 1", TaskStatus.DONE, epicId);
+        t.addSubtask(s1);
+        System.out.print(" -> " + t.getEpic(epicId).getStatus());
+
+        t.deleteSubTaskList();
+        System.out.println(" -> " + t.getEpic(epicId).getStatus());
     }
 }
