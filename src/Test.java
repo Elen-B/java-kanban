@@ -6,11 +6,8 @@ public class Test {
     static Scanner scanner = new Scanner(System.in);
 
     public static void startAutoCheck() {
-        checkEpicStatus1();
-        System.out.println("---");
-        checkEpicStatus2();
-        System.out.println("---");
-        checkEpicStatus3();
+        checkEmptyHistory();
+        checkFilledHistory();
     }
 
     public static void start() {
@@ -432,5 +429,34 @@ public class Test {
 
         t.deleteSubTaskList();
         System.out.println(" -> " + t.getEpic(epicId).getStatus());
+    }
+
+    public static void checkEmptyHistory() {
+        TaskManager t = taskManager;
+        System.out.println("История:");
+        for (Task task : t.getHistory()) {
+            System.out.println(task);
+        }
+    }
+
+    public static void checkFilledHistory() {
+        TaskManager t = taskManager;
+
+        Task task = new Task("Задача 1", "описание задачи 1");
+        t.addTask(task);
+        task = new Task("Задача 2", "описание задачи 2");
+        t.addTask(task);
+        Epic epic = new Epic("Эпик 1", "описание эпика 1");
+        t.addEpic(epic);
+        task = t.getTask(2);
+        task = t.getEpic(3);
+        for (int i = 0; i < 9; i++) {
+            task = t.getTask(1);
+        }
+
+        System.out.println("История:");
+        for (Task item : t.getHistory()) {
+            System.out.println(item);
+        }
     }
 }

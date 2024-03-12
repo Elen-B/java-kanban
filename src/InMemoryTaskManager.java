@@ -6,12 +6,15 @@ public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, Task> taskList;
     private final HashMap<Integer, Epic> epicList;
     private final HashMap<Integer, Subtask> subtaskList;
+
+    private final ArrayList<Task> historyList;
     private int nextTaskId;
 
     public InMemoryTaskManager() {
         this.taskList = new HashMap<>();
         this.epicList = new HashMap<>();
         this.subtaskList = new HashMap<>();
+        this.historyList = new ArrayList<>();
         this.nextTaskId = 1;
     }
 
@@ -107,19 +110,23 @@ public class InMemoryTaskManager implements TaskManager {
         if (!subtaskList.containsKey(id)) {
             return;
         }
-        Epic epic = getEpic(getSubtask(id).getEpicId());
+        Epic epic = epicList.get(subtaskList.get(id).getEpicId());
         epic.deleteSubtask(subtaskList.get(id));
         syncSubtaskListWithEpic(epic);
     }
 
     @Override
     public Task getTask(int id) {
-        return taskList.get(id);
+        Task task = taskList.get(id);
+        addTaskToHistory(task);
+        return task;
     }
 
     @Override
     public Epic getEpic(int id) {
-        return epicList.get(id);
+        Epic epic = epicList.get(id);
+        addTaskToHistory(epic);
+        return epic;
     }
 
     @Override
@@ -164,6 +171,21 @@ public class InMemoryTaskManager implements TaskManager {
             epic.deleteSubtaskList();
         }
         subtaskList.clear();
+    }
+
+    @Override
+    public List<Task> getHistory() {
+        return historyList;
+    }
+
+    private void addTaskToHistory(Task task) {
+        if (task == null) {
+            return;
+        }
+        if (historyList.size() == TaskManager.DEFAULT_HISTORY_SIZE) {
+            historyList.removeFirst();
+        }
+        historyList.add(task);
     }
 
 }

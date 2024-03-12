@@ -1,6 +1,7 @@
 import java.util.List;
 
 public interface TaskManager {
+    int DEFAULT_HISTORY_SIZE = 10;
     int getNextTaskId();
 
     void addTask(Task task);
@@ -40,4 +41,6 @@ public interface TaskManager {
     void deleteEpicList();
 
     void deleteSubTaskList();
+
+    List<Task> getHistory();
 }
