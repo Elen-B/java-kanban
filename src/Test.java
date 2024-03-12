@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Test {
-    static TaskManager taskManager = new TaskManager();
+    static TaskManager taskManager = new InMemoryTaskManager();
     static Scanner scanner = new Scanner(System.in);
 
     public static void startAutoCheck() {
