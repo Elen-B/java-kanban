@@ -1,7 +1,6 @@
 import java.util.List;
 
 public interface TaskManager {
-    int DEFAULT_HISTORY_SIZE = 10;
     int getNextTaskId();
 
     void addTask(Task task);
