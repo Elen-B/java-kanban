@@ -6,8 +6,11 @@ public class Test {
     static Scanner scanner = new Scanner(System.in);
 
     public static void startAutoCheck() {
-        checkEmptyHistory();
-        checkFilledHistory();
+        checkEpicStatus1();
+        checkEpicStatus2();
+        checkEpicStatus3();
+        //checkEmptyHistory();
+       // checkFilledHistory();
     }
 
     public static void start() {

@@ -3,11 +3,11 @@ import java.util.List;
 public interface TaskManager {
     int getNextTaskId();
 
-    void addTask(Task task);
+    int addTask(Task task);
 
-    void addEpic(Epic epic);
+    int addEpic(Epic epic);
 
-    void addSubtask(Subtask subtask);
+    int addSubtask(Subtask subtask);
 
     void updateTask(Task task);
 
