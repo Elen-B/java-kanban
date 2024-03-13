@@ -15,7 +15,7 @@ public class InMemoryHistoryManager implements HistoryManager{
         if (historyList.size() == HistoryManager.DEFAULT_HISTORY_SIZE) {
             historyList.removeFirst();
         }
-        historyList.add(task);
+        historyList.add(task.copy());
     }
 
     @Override

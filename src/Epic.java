@@ -14,6 +14,11 @@ public class Epic extends Task{
         this.subtaskList = subtaskList;
     }
 
+    public Epic(Epic epic) {
+        super(epic.getId(), epic.getName(), epic.getDescription(), epic.getStatus());
+        this.subtaskList = new ArrayList<>(epic.subtaskList);
+    }
+
     public void deleteSubtaskList() {
         subtaskList.clear();
         this.setStatus(Epic.getStatus(subtaskList));
@@ -67,5 +72,10 @@ public class Epic extends Task{
                 ", status=" + this.getStatus() +
                 ", subtaskList=" + subtaskList +
                 '}';
+    }
+
+    @Override
+    public Epic copy() {
+        return new Epic(this);
     }
 }

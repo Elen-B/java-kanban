@@ -19,6 +19,13 @@ public class Task {
         this.status = status;
     }
 
+    public Task(Task task) {
+        this.id = task.id;
+        this.name = task.name;
+        this.description = task.description;
+        this.status = task.status;
+    }
+
     public int getId() {
         return id;
     }
@@ -31,7 +38,7 @@ public class Task {
         return name;
     }
 
-    private void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -49,6 +56,10 @@ public class Task {
 
     protected void setStatus(TaskStatus status) {
         this.status = status;
+    }
+
+    public Task copy() {
+        return new Task(this);
     }
 
     @Override

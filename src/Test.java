@@ -6,11 +6,11 @@ public class Test {
     static Scanner scanner = new Scanner(System.in);
 
     public static void startAutoCheck() {
-        checkEpicStatus1();
-        checkEpicStatus2();
-        checkEpicStatus3();
-        //checkEmptyHistory();
-       // checkFilledHistory();
+        //checkEpicStatus1();
+        //checkEpicStatus2();
+        //checkEpicStatus3();
+        checkEmptyHistory();
+        checkFilledHistory();
     }
 
     public static void start() {
@@ -453,9 +453,12 @@ public class Test {
         t.addEpic(epic);
         task = t.getTask(2);
         task = t.getEpic(3);
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 5; i++) {
             task = t.getTask(1);
         }
+        task = t.getEpic(3);
+        t.addSubtask(new Subtask("подзадача 1", "описание подзадачи 1", 3));
+        task = t.getEpic(3);
 
         System.out.println("История:");
         for (Task item : t.getHistory()) {
