@@ -25,10 +25,15 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public int addTask(Task task) {
+        if (Task.class != task.getClass()) {
+            return -1;
+        }
         int id = task.getId();
         if (id == 0) {
             id = getNextTaskId();
             task.setId(id);
+        } else if (taskList.containsKey(id)) {
+            return -1;
         }
         taskList.put(id, task);
         return id;
@@ -40,12 +45,12 @@ public class InMemoryTaskManager implements TaskManager {
         if (id == 0) {
             id = getNextTaskId();
             epic.setId(id);
+        } else if (epicList.containsKey(id)) {
+            return -1;
         }
         epicList.put(id, epic);
         if (epic.getSubtaskList() != null) {
-            for (Subtask subtask: epic.getSubtaskList()) {
-                subtaskList.put(subtask.getId(), subtask);
-            }
+            syncSubtaskListWithEpic(epic);
         }
         return id;
     }
@@ -60,6 +65,8 @@ public class InMemoryTaskManager implements TaskManager {
         if (id == 0) {
             id = getNextTaskId();
             subtask.setId(id);
+        } else if (subtaskList.containsKey(id)) {
+            return -1;
         }
         Epic epic = epicList.get(subtask.getEpicId());
         epic.addSubtask(subtask);
@@ -182,6 +189,16 @@ public class InMemoryTaskManager implements TaskManager {
             epic.deleteSubtaskList();
         }
         subtaskList.clear();
+    }
+
+    @Override
+    public void deleteSubTaskList(int epicId) {
+        Epic epic = epicList.get(epicId);
+        if (epic == null) {
+            return;
+        }
+        epic.deleteSubtaskList();
+        syncSubtaskListWithEpic(epic);
     }
 
     @Override

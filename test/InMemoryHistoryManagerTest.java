@@ -1,5 +1,7 @@
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryHistoryManagerTest {
@@ -10,6 +12,7 @@ class InMemoryHistoryManagerTest {
         Task task = new Task(1, "Задача 1", "", TaskStatus.NEW);
         historyManager.add(task);
 
+        assertNotNull(historyManager.getHistory(), "История пустая");
         assertEquals(1, historyManager.getHistory().size(), "Задача не добавлена в историю просмотра");
     }
 
@@ -24,9 +27,12 @@ class InMemoryHistoryManagerTest {
         task.setName("Модифицированная задача");
         task.setDescription(null);
         task.setStatus(TaskStatus.DONE);
-        String nameInHist = historyManager.getHistory().getFirst().getName();
-        String descriptionInHist = historyManager.getHistory().getFirst().getDescription();
-        TaskStatus statusInHist = historyManager.getHistory().getFirst().getStatus();
+        List<Task> history = historyManager.getHistory();
+
+        assertNotNull(history, "История должна содержать 1 элемент");
+        String nameInHist = history.getFirst().getName();
+        String descriptionInHist = history.getFirst().getDescription();
+        TaskStatus statusInHist = history.getFirst().getStatus();
 
         assertEquals(name, nameInHist, "Изменение данных (название) задачи не должно менять данных, сохраненных в истории по этой задаче");
         assertEquals(description, descriptionInHist, "Изменение данных (описание) задачи не должно менять данных, сохраненных в истории по этой задаче");

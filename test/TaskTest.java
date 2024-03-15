@@ -28,7 +28,7 @@ class TaskTest {
 
         String name2 = "Другая задача";
         Task task2 = new Task(id, name2, description, status);
-        assertEquals(task1, task2);
+        assertEquals(task1, task2, "Задачи с одинаковыми ИД должны быть равны");
     }
 
     @Test
@@ -40,6 +40,6 @@ class TaskTest {
         Task task1 = new Task(id, name1, description, status);
         Task task2 = task1.copy();
 
-        assertNotSame(task1, task2);
+        assertNotSame(task1, task2, "Копирование не выполнено");
     }
 }
