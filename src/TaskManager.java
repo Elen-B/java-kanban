@@ -1,8 +1,6 @@
 import java.util.List;
 
 public interface TaskManager {
-    int getNextTaskId();
-
     int addTask(Task task);
 
     int addEpic(Epic epic);

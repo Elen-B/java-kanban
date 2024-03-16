@@ -18,8 +18,7 @@ public class InMemoryTaskManager implements TaskManager {
         historyManager = Managers.getDefaultHistory();
     }
 
-    @Override
-    public int getNextTaskId() {
+    private int getNextTaskId() {
         return nextTaskId++;
     }
 
@@ -28,26 +27,16 @@ public class InMemoryTaskManager implements TaskManager {
         if (Task.class != task.getClass()) {
             return -1;
         }
-        int id = task.getId();
-        if (id == 0) {
-            id = getNextTaskId();
-            task.setId(id);
-        } else if (taskList.containsKey(id)) {
-            return -1;
-        }
+        int id = getNextTaskId();
+        task.setId(id);
         taskList.put(id, task);
         return id;
     }
 
     @Override
     public int addEpic(Epic epic) {
-        int id = epic.getId();
-        if (id == 0) {
-            id = getNextTaskId();
-            epic.setId(id);
-        } else if (epicList.containsKey(id)) {
-            return -1;
-        }
+        int id = getNextTaskId();
+        epic.setId(id);
         epicList.put(id, epic);
         if (epic.getSubtaskList() != null) {
             syncSubtaskListWithEpic(epic);
@@ -60,14 +49,8 @@ public class InMemoryTaskManager implements TaskManager {
         if (!epicList.containsKey(subtask.getEpicId())) {
             return -1;
         }
-
-        int id = subtask.getId();
-        if (id == 0) {
-            id = getNextTaskId();
-            subtask.setId(id);
-        } else if (subtaskList.containsKey(id)) {
-            return -1;
-        }
+        int id = getNextTaskId();
+        subtask.setId(id);
         Epic epic = epicList.get(subtask.getEpicId());
         epic.addSubtask(subtask);
         updateEpic(epic);

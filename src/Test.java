@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Test {
@@ -6,9 +5,9 @@ public class Test {
     static Scanner scanner = new Scanner(System.in);
 
     public static void startAutoCheck() {
-        //checkEpicStatus1();
-        //checkEpicStatus2();
-        //checkEpicStatus3();
+        checkEpicStatus1();
+        checkEpicStatus2();
+        checkEpicStatus3();
         checkEmptyHistory();
         checkFilledHistory();
     }
@@ -387,11 +386,11 @@ public class Test {
         TaskManager t = taskManager;
         t.deleteEpicList();
 
-        int epicId = t.getNextTaskId();
-        Epic e1 = new Epic(epicId, "epic name", "epic description", new ArrayList<>());
-        t.addEpic(e1);
+        Epic e1 = new Epic("epic name", "epic description");
+        int epicId = t.addEpic(e1);
 
-        Subtask s1 = new Subtask(t.getNextTaskId(), "Subtask name 1", "Subtask description 1", TaskStatus.IN_PROGRESS, epicId);
+        Subtask s1 = new Subtask("Subtask name 1", "Subtask description 1", epicId);
+        s1.setStatus(TaskStatus.IN_PROGRESS);
 
         t.addSubtask(s1);
 
@@ -405,9 +404,8 @@ public class Test {
         TaskManager t = taskManager;
         t.deleteEpicList();
 
-        int epicId = t.getNextTaskId();
-        Epic e1 = new Epic(epicId, "epic name", "epic description", new ArrayList<>());
-        t.addEpic(e1);
+        Epic e1 = new Epic("epic name", "epic description");
+        int epicId = t.addEpic(e1);
 
         Subtask s1 = new Subtask("Subtask name 1", "Subtask description 1", epicId);
         Subtask s2 = new Subtask("Subtask name 2", "Subtask description 2", epicId);
@@ -426,7 +424,8 @@ public class Test {
 
         System.out.print(" -> " + t.getEpic(epicId).getStatus());
 
-        s1 = new Subtask(t.getNextTaskId(), "Subtask name 1", "Subtask description 1", TaskStatus.DONE, epicId);
+        s1 = new Subtask("Subtask name 1", "Subtask description 1", epicId);
+        s1.setStatus(TaskStatus.DONE);
         t.addSubtask(s1);
         System.out.print(" -> " + t.getEpic(epicId).getStatus());
 

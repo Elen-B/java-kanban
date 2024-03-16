@@ -14,10 +14,11 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void shouldReturn2ForNextTaskId() {
-        int nextId = taskManager.getNextTaskId();
-        nextId = taskManager.getNextTaskId();
-        assertEquals(2, nextId, "Неверное значение счетчика");
+    void shouldReturn2ForTaskId() {
+        Task task = new Task("Задача 1", "описание задачи");
+        taskManager.addTask(task);
+        int id = taskManager.addTask(task);
+        assertEquals(2, id, "Неверное значение счетчика");
     }
 
     @Test
